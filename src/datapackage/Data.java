@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Data implements Serializable {
 
     private Info info;
+
     private int iChoice;
     byte[] img;
 

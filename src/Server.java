@@ -65,6 +65,32 @@ public class Server {
 
             // 상대방으로부터 데이터를 받은 후 분기 처리
             DEnemy = (Data) in.readObject();
+            switch (MyChoice){
+                case ATTACK:
+                    DPlayer.SetChoice(ATTACK);
+                    break;
+                case ATTACK_COUNTER:
+                    DPlayer.SetChoice(ATTACK_COUNTER);
+                    break;
+                case DEFEND:
+                    DPlayer.SetChoice(DEFEND);
+                    break;
+                case DEFEND_COUNTER:
+                    DPlayer.SetChoice(DEFEND_COUNTER);
+                    break;
+                case DAMAGE_BUFF:
+                    DPlayer.SetChoice(DAMAGE_BUFF);
+                    break;
+                case BUFF_COUNTER:
+                    DPlayer.SetChoice(BUFF_COUNTER);
+                    break;
+                case FINISH:
+                    DPlayer.SetChoice(FINISH);
+                    break;
+            }
+
+            out.writeObject(DPlayer);
+
 
             // 내가 보낸 데이터에 따른 분기처리
             switch (MyChoice){
@@ -72,8 +98,7 @@ public class Server {
                     iDamage = DPlayer.GetInfo().GetDamage();
                     if(DEnemy.GetChoice() == DEFEND)
                         iDamage -= DPlayer.GetInfo().GetArmor();
-                    else
-                        DEnemy.GetInfo().SetHP(iDamage);
+                    DEnemy.GetInfo().SetHP(iDamage);
                     strlog=iDamage + "만큼 공격합니다.\n";
                     break;
                 case ATTACK_COUNTER:// ATTACK_COUNTER todo
@@ -123,8 +148,7 @@ public class Server {
                     iDamage = DEnemy.GetInfo().GetDamage();
                     if(MyChoice == DEFEND)
                         iDamage -= DPlayer.GetInfo().GetArmor();
-                    else
-                        DPlayer.GetInfo().SetHP(iDamage);
+                    DPlayer.GetInfo().SetHP(iDamage);
                     strlog = strlog + "상대방이 "+ iDamage + "만큼 공격합니다. \n";
                     break;
                 case ATTACK_COUNTER:// ATTACK_COUNTER todo
@@ -184,30 +208,6 @@ public class Server {
             System.out.println("---------내 정보---------\n" + info.GetStat() + strlog2); // 플레이어 정보와 버프 로그 출력
             // 나의 데이터를 상대방에게 보냄
 
-            switch (MyChoice){
-                case ATTACK:
-                    DPlayer.SetChoice(ATTACK);
-                    break;
-                case ATTACK_COUNTER:
-                    DPlayer.SetChoice(ATTACK_COUNTER);
-                    break;
-                case DEFEND:
-                    DPlayer.SetChoice(DEFEND);
-                    break;
-                case DEFEND_COUNTER:
-                    DPlayer.SetChoice(DEFEND_COUNTER);
-                    break;
-                case DAMAGE_BUFF:
-                    DPlayer.SetChoice(DAMAGE_BUFF);
-                    break;
-                case BUFF_COUNTER:
-                    DPlayer.SetChoice(BUFF_COUNTER);
-                    break;
-                case FINISH:
-                    DPlayer.SetChoice(FINISH);
-                    break;
-            }
-
             if(info.GetHP() <= 0) {// 만약 플레이어의 죽은 상태라면 죽었다고 표시하고 데이터 보냄
                 DPlayer.SetChoice(0);
                 System.out.println("패배했습니다...");
@@ -215,11 +215,14 @@ public class Server {
                 client.close();
                 return;
             }
-
-            out.writeObject(DPlayer);
-
+            if(DEnemy.GetInfo().GetHP() <= 0) {// 만약 플레이어의 죽은 상태라면 죽었다고 표시하고 데이터 보냄
+                DPlayer.SetChoice(0);
+                System.out.println("승리했습니다!");
+                return;
+            }
 
             client.close();
+
         }
 
 
