@@ -27,10 +27,10 @@ public class Info implements Serializable{
     public void SetBuffCount(int buffCount) {m_iBuffCount += buffCount;}
 
     public String GetStat(){
-        String str = "남은 체력 :" + m_iHP + "\n"
-                + "공격력 계수 : " + m_iDamage + "\n"
-                + "방어력 계수 : " + m_iArmor + "\n"
-                + "버프 지속시간 : " + m_iBuffCount + "\n";
+        String str = "the rest of one's energy :" + m_iHP + "\n"
+                + "Attack power factor : " + m_iDamage + "\n"
+                + "coefficient of defense : " + m_iArmor + "\n"
+                + "Buff duration : " + m_iBuffCount + "\n";
         return str;
     }
 
